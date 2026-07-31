@@ -218,9 +218,7 @@ const service = require("../models/service");
         if (result.matchedCount === 0) {
             return res.status(404).send("Appointment not found");
         }
-
         res.send(result);
-
     }
     catch (err) {
         res.status(500).send(err.message);
