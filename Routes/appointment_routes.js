@@ -125,12 +125,10 @@ const service = require("../models/service");
 
         const data = req.body;
 
-        // Do not allow appointment_id to be updated
         if (data.appointment_id !== undefined) {
             return res.status(400).send("Appointment ID cannot be updated");
         }
 
-        // Customer Validation
         if (data.customer_id !== undefined) {
 
             if (data.customer_id.trim() == "") {
@@ -148,7 +146,6 @@ const service = require("../models/service");
             }
         }
 
-        // Barber Validation
         if (data.barber_id !== undefined) {
 
             if (data.barber_id.trim() == "") {
@@ -166,7 +163,6 @@ const service = require("../models/service");
             }
         }
 
-        // Service Validation
         if (data.service_id !== undefined) {
 
             if (data.service_id.trim() == "") {
@@ -184,15 +180,12 @@ const service = require("../models/service");
             }
         }
 
-        // Appointment Date Validation
         if (data.appointment_date !== undefined) {
 
             if (isNaN(new Date(data.appointment_date).getTime())) {
                 return res.status(400).send("Invalid Appointment Date");
             }
         }
-
-        // Status Validation
         if (data.status !== undefined) {
 
             if (data.status.trim() == "") {
@@ -213,7 +206,6 @@ const service = require("../models/service");
             }
         }
 
-        // Remarks Sanitization
         if (data.remarks !== undefined) {
             data.remarks = data.remarks.trim();
         }
