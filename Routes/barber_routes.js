@@ -95,9 +95,7 @@ const user = require("../models/user")
         }
 
         const result = await barber.create(data);
-
         res.status(201).send(result);
-
     }
     catch (err) {
         res.status(500).send(err.message);
