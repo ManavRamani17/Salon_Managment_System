@@ -8,5 +8,4 @@ const customerSchema = new mongoose.Schema({
     gender: String,
     created_at: Date
 });
-
 module.exports = mongoose.model("Customer", customerSchema);

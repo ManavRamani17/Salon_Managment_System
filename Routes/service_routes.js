@@ -22,7 +22,6 @@ const service = require("../models/service")
     router.post('/', async (req, res) => {
 
     try {
-
         const data = req.body;
 
         if (!data.service_id) {
@@ -65,9 +64,7 @@ const service = require("../models/service")
         }
 
         const result = await service.create(data);
-
         res.status(201).send(result);
-
     }
     catch (err) {
         res.status(500).send(err.message);
@@ -143,9 +140,7 @@ const service = require("../models/service")
         if (result.matchedCount === 0) {
             return res.status(404).send("Service not found");
         }
-
         res.send(result);
-
     }
     catch (err) {
         res.status(500).send(err.message);

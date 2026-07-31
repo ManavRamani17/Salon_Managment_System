@@ -108,9 +108,7 @@ const user = require("../models/user")
     router.patch('/:id', async (req, res) => {
 
     try {
-
         const data = req.body;
-
         if (data.barber_id !== undefined) {
 
             if (data.barber_id.trim() == "") {
@@ -201,9 +199,7 @@ const user = require("../models/user")
         if (result.matchedCount === 0) {
             return res.status(404).send("Barber not found");
         }
-
         res.send(result);
-
     }
     catch (err) {
         res.status(500).send(err.message);
