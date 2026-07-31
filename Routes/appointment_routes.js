@@ -119,8 +119,120 @@ const service = require("../models/service");
     }
 });
 
-    router.patch('/:id', async (req,res)=>{
-        const result = await appointment.updateOne({appointment_id:req.params.id},req.body);
-        res.send(result)
-    })
+    router.patch('/:id', async (req, res) => {
+
+    try {
+
+        const data = req.body;
+
+        // Do not allow appointment_id to be updated
+        if (data.appointment_id !== undefined) {
+            return res.status(400).send("Appointment ID cannot be updated");
+        }
+
+        // Customer Validation
+        if (data.customer_id !== undefined) {
+
+            if (data.customer_id.trim() == "") {
+                return res.status(400).send("Customer ID cannot be empty");
+            }
+
+            data.customer_id = data.customer_id.trim();
+
+            const existingCustomer = await customer.findOne({
+                customer_id: data.customer_id
+            });
+
+            if (!existingCustomer) {
+                return res.status(400).send("Customer ID does not exist");
+            }
+        }
+
+        // Barber Validation
+        if (data.barber_id !== undefined) {
+
+            if (data.barber_id.trim() == "") {
+                return res.status(400).send("Barber ID cannot be empty");
+            }
+
+            data.barber_id = data.barber_id.trim();
+
+            const existingBarber = await barber.findOne({
+                barber_id: data.barber_id
+            });
+
+            if (!existingBarber) {
+                return res.status(400).send("Barber ID does not exist");
+            }
+        }
+
+        // Service Validation
+        if (data.service_id !== undefined) {
+
+            if (data.service_id.trim() == "") {
+                return res.status(400).send("Service ID cannot be empty");
+            }
+
+            data.service_id = data.service_id.trim();
+
+            const existingService = await service.findOne({
+                service_id: data.service_id
+            });
+
+            if (!existingService) {
+                return res.status(400).send("Service ID does not exist");
+            }
+        }
+
+        // Appointment Date Validation
+        if (data.appointment_date !== undefined) {
+
+            if (isNaN(new Date(data.appointment_date).getTime())) {
+                return res.status(400).send("Invalid Appointment Date");
+            }
+        }
+
+        // Status Validation
+        if (data.status !== undefined) {
+
+            if (data.status.trim() == "") {
+                return res.status(400).send("Status cannot be empty");
+            }
+
+            data.status = data.status.trim();
+
+            const validStatus = [
+                "Pending",
+                "Scheduled",
+                "Completed",
+                "Cancelled"
+            ];
+
+            if (!validStatus.includes(data.status)) {
+                return res.status(400).send("Invalid Status");
+            }
+        }
+
+        // Remarks Sanitization
+        if (data.remarks !== undefined) {
+            data.remarks = data.remarks.trim();
+        }
+
+        const result = await appointment.updateOne(
+            { appointment_id: req.params.id },
+            { $set: data }
+        );
+
+        if (result.matchedCount === 0) {
+            return res.status(404).send("Appointment not found");
+        }
+
+        res.send(result);
+
+    }
+    catch (err) {
+        res.status(500).send(err.message);
+    }
+
+});
 module.exports = router
