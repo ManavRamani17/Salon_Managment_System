@@ -58,7 +58,7 @@ const user = require("../models/user")
         });
 
         if (assignedBarber) {
-            return res.status(400).send("This User ID is already assigned to another barber");
+            return res.status(400).send("This User ID is already assigned to another person");
         }
 
         if (existingUser.role !== "Barber") {
@@ -155,7 +155,7 @@ const user = require("../models/user")
                 assignedBarber &&
                 assignedBarber.barber_id !== req.params.id
             ) {
-                return res.status(400).send("This User ID is already assigned to another barber");
+                return res.status(400).send("This User ID is already assigned to another person");
             }
 
             if (existingUser.role !== "Barber") {
