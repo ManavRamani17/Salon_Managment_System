@@ -19,7 +19,7 @@ mongoose.connect(mongoUrl)
     console.log("MongoDB Connected");
 
     app.post("/login", (req, res) => {
-      console.log("Login Request: ", req.body);
+      
     if (req.body.username == "Admin" && req.body.password == "admin123") {
       var token = jwt.sign({ username: "Admin", img: "asdfasdf" }, "shhhhh");
       res.status(200).send({
